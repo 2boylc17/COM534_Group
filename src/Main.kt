@@ -76,7 +76,6 @@ fun changeRoom(roomslist: MutableList<Room>, user: Student) {
             null -> {
                 return
             }
-
             else -> {
                 println("Would you like to change the Building, OS or Delete the room? (B/O/D)")
                 val change = readln()
@@ -84,13 +83,13 @@ fun changeRoom(roomslist: MutableList<Room>, user: Student) {
                     "B" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        roomslist[num - 1].building = new
+                        roomslist[num - 1].modifyRoom("Building", new)
                     }
 
                     "O" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        roomslist[num - 1].os = new
+                        roomslist[num - 1].modifyRoom("OS", new)
                     }
                     "D" -> {
                         roomslist.removeAt(num - 1)
@@ -139,33 +138,26 @@ fun changeUser(peoplelist: MutableList<Student>, user: Student) {
                     "I" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        peoplelist[num - 1].id = new
+                        peoplelist[num - 1].modifyUser("Id", new)
                     }
                     "U" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        peoplelist[num - 1].username = new
+                        peoplelist[num - 1].modifyUser("Username", new)
                     }
                     "P" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        peoplelist[num - 1].password = new
+                        peoplelist[num - 1].modifyUser("Password", new)
                     }
                     "N" -> {
                         println("What would you like to change it to?")
                         val new = readln()
-                        peoplelist[num - 1].phoneNumber = new
+                        peoplelist[num - 1].modifyUser("PhoneNumber", new)
                     }
                     "A" -> {
-                        if (peoplelist[num - 1].admin){
-                            peoplelist[num - 1].admin = false
-                            println("User is no longer an admin")
-                            readln()
-                        } else {
-                            peoplelist[num - 1].admin = true
-                            println("User is now an admin")
-                            readln()
-                        }
+                        peoplelist[num - 1].modifyUser("Admin", "")
+                        println("Admin Status Changed")
                     }
                     "D" -> {
                         peoplelist.removeAt(num - 1)
