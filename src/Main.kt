@@ -1,6 +1,8 @@
 fun main() {
     val peoplelist : MutableList<Student> = mutableListOf()
-    peoplelist.add(Student("1","qwerty","asdfg","12345", true))
+    peoplelist.add(Student("1","admin1","password1","12345", true))
+    peoplelist.add(Student("2","student1","password2","54321", false))
+    peoplelist.add(Student("3","student2","password3","89101", false))
     val roomslist: MutableList<Room> = mutableListOf()
     roomslist.add(Room("Building 1","Windows"))
     roomslist.add(Room("Building 2","Linux"))
@@ -8,6 +10,9 @@ fun main() {
 }
 
 fun menu(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
+    val user = peoplelist[0]
+    //setting user to an admin to allow parts h and j to work
+    //if user is set to peoplelist[1] it will not allow the user to modify anything
     println("What would you like to do? \n" +
             "1. Sign Up for an account \n" +
             "2. Change details of a room \n" +
@@ -16,22 +21,19 @@ fun menu(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
     val option = readln()
     when (option) {
         "1" -> {
-            newUser(peoplelist, roomslist)
+            newUser(peoplelist)
             menu(peoplelist, roomslist)
         }
         "2" -> {
-            changeRoom(roomslist, peoplelist)
+            changeRoom(roomslist, user)
             menu(peoplelist, roomslist)
         }
         "3" -> {
-            readln()
+            changeUser(peoplelist, user)
             menu(peoplelist, roomslist)
         }
         "4" -> {
             println("Thank You")
-        }
-        "5" -> {
-            println(roomslist[0].building)
         }
         else -> {
             readln()
@@ -40,7 +42,7 @@ fun menu(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
     }
 }
 
-fun newUser(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
+fun newUser(peoplelist: MutableList<Student>) {
     println("What is the ID?")
     val id = readln()
     println("What is the username?")
@@ -58,38 +60,129 @@ fun newUser(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
     peoplelist.add(Student(id,name,password,number,admin))
 }
 
-fun changeRoom(roomslist: MutableList<Room>, peoplelist: MutableList<Student>) {
-    var count = 0
-    for (room in roomslist) {
-        count += 1
-        val building = room.building
-        val os = room.os
-        println("$count. $building, $os")
+fun changeRoom(roomslist: MutableList<Room>, user: Student) {
+    if (user.admin) {
+        var count = 0
+        for (room in roomslist) {
+            count += 1
+            val building = room.building
+            val os = room.os
+            println("$count. $building, $os")
 
-    }
-    println("Which room would you like to change?")
-    val answer = readln()
-    when(val num = answer.toIntOrNull()){
-        null -> {
-            return
         }
-        else -> {
-            println("Would you like to change the Building or OS? (B/O)")
-            val change = readln()
-            if (change == "B") {
-                println("What would you like to change it to?")
-                val new = readln()
-                roomslist[num - 1].building = new
-            }
-            if (change == "O") {
-                println("What would you like to change it to?")
-                val new = readln()
-                roomslist[num - 1].os = new
-            }
-            else {
+        println("Which room would you like to change?")
+        val answer = readln()
+        when (val num = answer.toIntOrNull()) {
+            null -> {
                 return
             }
+
+            else -> {
+                println("Would you like to change the Building, OS or Delete the room? (B/O/D)")
+                val change = readln()
+                when (change) {
+                    "B" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        roomslist[num - 1].building = new
+                    }
+
+                    "O" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        roomslist[num - 1].os = new
+                    }
+                    "D" -> {
+                        roomslist.removeAt(num - 1)
+                        println("Room removed")
+                        readln()
+                    }
+                    else -> {
+                        return
+                    }
+                }
+            }
         }
+    }
+    else{
+        print("User is not an admin")
+        readln()
+        return
+    }
+}
+
+fun changeUser(peoplelist: MutableList<Student>, user: Student) {
+    if (user.admin) {
+        var count = 0
+        for (people in peoplelist) {
+            count += 1
+            val id = people.id
+            val username = people.username
+            val password = people.password
+            val number = people.phoneNumber
+            val admin = people.admin
+            println("$count. $id, $username, $password, $number, $admin")
+
+        }
+        println("Which user would you like to change?")
+        val answer = readln()
+        when (val num = answer.toIntOrNull()) {
+            null -> {
+                return
+            }
+
+            else -> {
+                println("What would you like to change? Id, Username, Password, Phone Number, " +
+                        "Admin Privileges or Delete the user? (I/U/P/N/A/D)")
+                val change = readln()
+                when (change) {
+                    "I" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        peoplelist[num - 1].id = new
+                    }
+                    "U" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        peoplelist[num - 1].username = new
+                    }
+                    "P" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        peoplelist[num - 1].password = new
+                    }
+                    "N" -> {
+                        println("What would you like to change it to?")
+                        val new = readln()
+                        peoplelist[num - 1].phoneNumber = new
+                    }
+                    "A" -> {
+                        if (peoplelist[num - 1].admin){
+                            peoplelist[num - 1].admin = false
+                            println("User is no longer an admin")
+                            readln()
+                        } else {
+                            peoplelist[num - 1].admin = true
+                            println("User is now an admin")
+                            readln()
+                        }
+                    }
+                    "D" -> {
+                        peoplelist.removeAt(num - 1)
+                        println("User removed")
+                        readln()
+                    }
+                    else -> {
+                        return
+                    }
+                }
+            }
+        }
+    }
+    else{
+        print("User is not an admin")
+        readln()
+        return
     }
 }
 
