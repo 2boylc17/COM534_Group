@@ -1,15 +1,15 @@
 fun main() {
-    val peoplelist : MutableList<Student> = mutableListOf()
-    peoplelist.add(Student("1","admin1","password1","12345", true))
-    peoplelist.add(Student("2","student1","password2","54321", false))
-    peoplelist.add(Student("3","student2","password3","89101", false))
+    val peoplelist : MutableList<User> = mutableListOf()
+    peoplelist.add(User("1","admin1","password1","12345", true))
+    peoplelist.add(User("2","student1","password2","54321", false))
+    peoplelist.add(User("3","student2","password3","89101", false))
     val roomslist: MutableList<Room> = mutableListOf()
     roomslist.add(Room("Building 1","Windows"))
     roomslist.add(Room("Building 2","Linux"))
     menu(peoplelist, roomslist)
 }
 
-fun menu(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
+fun menu(peoplelist: MutableList<User>, roomslist: MutableList<Room>) {
     val user = peoplelist[0]
     //setting user to an admin to allow parts h and j to work
     //if user is set to peoplelist[1] it will not allow the user to modify anything
@@ -42,7 +42,7 @@ fun menu(peoplelist: MutableList<Student>, roomslist: MutableList<Room>) {
     }
 }
 
-fun newUser(peoplelist: MutableList<Student>) {
+fun newUser(peoplelist: MutableList<User>) {
     println("What is the ID?")
     val id = readln()
     println("What is the username?")
@@ -57,10 +57,10 @@ fun newUser(peoplelist: MutableList<Student>) {
     if (answer == "Y"){
         admin = true
     }
-    peoplelist.add(Student(id,name,password,number,admin))
+    peoplelist.add(User(id,name,password,number,admin))
 }
 
-fun changeRoom(roomslist: MutableList<Room>, user: Student) {
+fun changeRoom(roomslist: MutableList<Room>, user: User) {
     if (user.admin) {
         var count = 0
         for (room in roomslist) {
@@ -110,7 +110,7 @@ fun changeRoom(roomslist: MutableList<Room>, user: Student) {
     }
 }
 
-fun changeUser(peoplelist: MutableList<Student>, user: Student) {
+fun changeUser(peoplelist: MutableList<User>, user: User) {
     if (user.admin) {
         var count = 0
         for (people in peoplelist) {
